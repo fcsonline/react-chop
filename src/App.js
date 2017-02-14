@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import ChopList from './ChopList';
 
-const size = 100;
+const size = 200;
 const list = [...Array(size).keys()];
 const images = [
   'https://upload.wikimedia.org/wikipedia/commons/9/9f/Arcade_machine_icon.png',
