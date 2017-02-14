@@ -34,7 +34,6 @@
   height: 100px;
   background: yellow;
   visibility: hidden;
-  transition: height 0.05s linear;
 }
 
 .Item {
