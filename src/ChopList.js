@@ -8,8 +8,9 @@ class ChopList extends Component {
       offset: 0,
       scrollTop: 0,
       internalOffset: 0,
-      windowSize: 20,
+      windowSize: 30,
       estimatedHeight: 40,
+      overscan: 10,
     };
   }
 
@@ -23,13 +24,15 @@ class ChopList extends Component {
   }
 
   onScroll(event) {
+    const maxHeight = this.state.estimatedHeight * this.props.rowCount;
+    const overscanHeight = this.state.estimatedHeight * this.state.overscan;
     const scrollTop = this.refs.list.scrollTop;
 
     if (!scrollTop || (!this.state.offset && scrollTop < 0)) return;
 
-    const realScrollTop = Math.min(Math.max(this.scrollTop + scrollTop * this.state.estimatedHeight, 0), 4000);
+    const realScrollTop = Math.min(Math.max(this.scrollTop + scrollTop * this.state.estimatedHeight, 0), maxHeight);
     const offset = Math.min(Math.floor(Math.max(scrollTop, 0) / this.state.estimatedHeight), this.props.rowCount - (this.state.windowSize - 200 / this.state.estimatedHeight));
-    const burgerHeight = !offset ? 0 : Math.round(scrollTop);
+    const burgerHeight = !offset ? 0 : Math.max(Math.round(scrollTop - overscanHeight), 0);
 
     console.log('s', scrollTop, burgerHeight, realScrollTop, offset);
 
