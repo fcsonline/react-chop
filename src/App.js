@@ -8,18 +8,22 @@ const images = [
   'https://upload.wikimedia.org/wikipedia/commons/9/9f/Arcade_machine_icon.png',
   'http://vignette2.wikia.nocookie.net/mariokart/images/9/91/MK8_Yoshi_Icon.png',
   'http://4.bp.blogspot.com/-QCsT_UnLHFM/VidICHb1MdI/AAAAAAAAAMo/RNog69J7kzM/s1600/gnome-games.png',
-  'http://icons.iconarchive.com/icons/ph03nyx/super-mario/256/Retro-Mushroom-Super-icon.png'
+  'http://png-5.findicons.com/files/icons/2297/super_mario/256/mushroom_1up.png'
 ]
 
+function rowRendererTextAreas({ key, index, style}) {
+  return (
+      <div key={key} className='Item'>
+        <textarea defaultValue={list[index]}/>
+      </div>
+  )
+}
+
 function rowRendererImages ({ key, index, style}) {
-  const className = index % 10 === 9 ? 'BigItem' : 'Item';
   const icon = index % 7 === 3;
 
   return (
-      <div
-        key={key}
-        className={className}
-      >
+      <div key={key} className='Item'>
         {list[index]}
 
         {icon && (
@@ -29,12 +33,19 @@ function rowRendererImages ({ key, index, style}) {
   )
 }
 
+function rowRendererDifferent ({ key, index, style}) {
+  const className = index % 10 === 9 ? 'BigItem' : 'Item';
+
+  return (
+      <div key={key} className={className}>
+        {list[index]}
+      </div>
+  )
+}
+
 function rowRenderer ({ key, index, style}) {
   return (
-      <div
-        key={key}
-        className='Item'
-      >
+      <div key={key} className='Item'>
         {list[index]}
       </div>
   )
@@ -44,17 +55,35 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Dynamic height</h1>
+        <h1>Same heights</h1>
+        <ChopList
+          rowCount={list.length}
+          rowRenderer={rowRenderer}
+        />
+
+
+        {
+        /*
+        <h1>Different heights</h1>
+        <ChopList
+          rowCount={list.length}
+          rowRenderer={rowRendererDifferent}
+        />
+
+        <h1>Dynamic content</h1>
         <ChopList
           rowCount={list.length}
           rowRenderer={rowRendererImages}
         />
 
-        <h1>Static height</h1>
+        <h1>Dynamic heights</h1>
         <ChopList
           rowCount={list.length}
-          rowRenderer={rowRenderer}
+          rowRenderer={rowRendererTextAreas}
         />
+        */
+        }
+
       </div>
     );
   }

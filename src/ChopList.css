@@ -1,0 +1,32 @@
+.List {
+  border: 1px solid red;
+  width: 500px;
+  height: 200px;
+  box-sizing: border-box;
+  direction: ltr;
+  position: relative;
+  will-change: transform;
+  overflow: auto;
+  margin: auto;
+}
+
+.innerScrollContainer {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  transform: translateZ(0);
+}
+
+.innerScrollList {
+  display: flex;
+  flex-direction: column;
+}
+
+.Burger {
+  height: 100px;
+  background: yellow;
+  visibility: hidden;
+}

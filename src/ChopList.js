@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './ChopList.css';
 
 class ChopList extends Component {
 
@@ -16,6 +17,15 @@ class ChopList extends Component {
     const childHeights = [...this.refs.innerScrollList.children].map(child => child.offsetHeight);
 
     return childHeights.reduce((h1, h2) => h1 + h2) / childHeights.length;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state.offset !== nextState.offset ||
+           this.state.burgerHeight !== nextState.burgerHeight;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('Render');
   }
 
   componentDidMount() {
@@ -39,11 +49,19 @@ class ChopList extends Component {
     const overscanHeight = this.estimatedHeight * this.state.overscan / 2;
     const burgerHeight = !offset ? 0 : Math.max(Math.round(scrollTop - overscanHeight) + Math.random() * this.estimatedHeight, 0);
 
-    // console.log('s', scrollTop, burgerHeight, realScrollTop, offset);
+    console.group();
+    console.log('s', scrollTop);
+    console.log('b', burgerHeight);
+    console.log('r', realScrollTop);
+    console.log('o', offset);
+    console.groupEnd();
 
     this.scrollTop = realScrollTop;  // Avoid state updates
 
-    this.setState({ offset, burgerHeight });
+    this.setState({
+      offset,
+      burgerHeight: Math.round(burgerHeight)
+    });
   }
 
   render() {
