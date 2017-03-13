@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './ChopList.css';
 
+const DEFAULT_OVERSCAN = 5;
+const DEFAULT_INITIAL_ELEMENT = 10;
+
 class ChopList extends Component {
 
   constructor(props) {
@@ -8,8 +11,9 @@ class ChopList extends Component {
 
     this.state = {
       offset: 0,
-      overscan: 20,
+      overscan: DEFAULT_OVERSCAN,
       burgerHeight: 0,
+      debug: false,
     };
   }
 
@@ -25,38 +29,37 @@ class ChopList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('Render');
+    // console.log('Render');
   }
 
   componentDidMount() {
     const estimatedHeight = this.getCurrentChildrenMeanHeight();
 
-    this.scrollTop = 0; // Avoid state updates
-    this.estimatedHeight = estimatedHeight; // Avoid state updates
-    this.windowSize = Math.ceil(this.refs.list.offsetHeight / estimatedHeight) + this.state.overscan;
+    this.windowSize = Math.ceil(this.refs.list.offsetHeight / estimatedHeight);
 
+    // Set real scrollbar size
     this.refs.innerScrollContainer.style.height = `${this.props.rowCount * estimatedHeight}px`;
   }
 
   onScroll(event) {
-    const maxHeight = this.estimatedHeight * this.props.rowCount;
     const scrollTop = this.refs.list.scrollTop;
 
-    if (!scrollTop || (!this.state.offset && scrollTop < 0)) return;
+    const meanHeight = this.getCurrentChildrenMeanHeight();
+    const offset = Math.min(Math.floor(scrollTop / meanHeight), this.props.rowCount - this.windowSize);
+    const burgerHeight = !offset ? 0 : (offset - this.state.overscan) * meanHeight;
 
-    const realScrollTop = Math.min(Math.max(this.scrollTop + scrollTop * this.estimatedHeight, 0), maxHeight);
-    const offset = Math.min(Math.floor(Math.max(scrollTop, 0) / this.estimatedHeight), this.props.rowCount - Math.ceil(this.refs.list.offsetHeight / this.estimatedHeight));
-    const overscanHeight = this.estimatedHeight * this.state.overscan / 2;
-    const burgerHeight = !offset ? 0 : Math.max(Math.round(scrollTop - overscanHeight) + Math.random() * this.estimatedHeight, 0);
-
-    console.group();
-    console.log('s', scrollTop);
-    console.log('b', burgerHeight);
-    console.log('r', realScrollTop);
-    console.log('o', offset);
-    console.groupEnd();
-
-    this.scrollTop = realScrollTop;  // Avoid state updates
+    if (this.state.debug) {
+      console.group();
+      console.log('Offset', offset);
+      console.log('Element size', meanHeight);
+      console.log('Elements', this.props.rowCount);
+      console.log('Overscan', this.state.overscan);
+      console.log('WindowHeight', this.refs.list.offsetHeight);
+      console.log('WindowSize', this.refs.list.offsetHeight / meanHeight);
+      console.log('Total', this.props.rowCount * meanHeight);
+      console.log('Burger', burgerHeight);
+      console.groupEnd();
+    }
 
     this.setState({
       offset,
@@ -64,21 +67,32 @@ class ChopList extends Component {
     });
   }
 
+  renderElements(renderedElements, realOffset) {
+    return (
+      [...Array(renderedElements)].map((x, i) =>
+        { return this.props.rowRenderer({key: 'k' + (i + realOffset), index: (i + realOffset)}) }
+      )
+    );
+  }
+
   render() {
-    const { offset, burgerHeight } = this.state;
-    const windowSize = this.windowSize || this.state.overscan;
+    const { offset, burgerHeight, overscan } = this.state;
+
+    const realOffset = Math.max(offset - overscan, 0);
+    let renderedElements;
+
+    if (this.windowSize) {
+      renderedElements = this.windowSize + Math.min(offset, overscan) + Math.min(this.props.rowCount - (overscan + offset), overscan)
+    } else {
+      renderedElements = DEFAULT_INITIAL_ELEMENT; // TODO: Decide what for the initial render
+    }
 
     return (
       <div ref='list' className="List" onScroll={this.onScroll.bind(this)}>
         <div ref='innerScrollContainer' className="innerScrollContainer">
-        {burgerHeight > 0 && (
           <div ref='burger' className="Burger" style={ { height: burgerHeight } }/>
-        )}
-
           <div ref='innerScrollList' className="innerScrollList">
-          {[...Array(windowSize)].map((x, i) =>
-            { return this.props.rowRenderer({key: 'k' + (i + offset), index: (i + offset)}) }
-          )}
+            {renderedElements > 0 && this.renderElements(renderedElements, realOffset)}
           </div>
         </div>
       </div>
