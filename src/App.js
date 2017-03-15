@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import ChopList from './ChopList';
 
-const size = 30;
+const size = 200;
 const list = [...Array(size).keys()];
 const images = [
   'https://upload.wikimedia.org/wikipedia/commons/9/9f/Arcade_machine_icon.png',
@@ -51,6 +51,14 @@ function rowRenderer ({ key, index, style}) {
   )
 }
 
+function rowRendererHorizontal ({ key, index, style}) {
+  return (
+      <div key={key} className='HItem'>
+        {list[index]}
+      </div>
+  )
+}
+
 class App extends Component {
   render() {
     return (
@@ -61,8 +69,16 @@ class App extends Component {
           rowRenderer={rowRenderer}
         />
 
+        <h1>Same widths</h1>
+        <ChopList
+          rowCount={list.length}
+          rowRenderer={rowRendererHorizontal}
+          direction='horizontal'
+        />
+
         {
         /*
+
         <h1>Different heights</h1>
         <ChopList
           rowCount={list.length}

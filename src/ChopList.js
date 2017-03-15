@@ -4,28 +4,55 @@ import './ChopList.css';
 const DEFAULT_OVERSCAN = 5;
 const DEFAULT_INITIAL_ELEMENT = 10;
 
+const FLEX_MAPPING = {
+  vertical: 'column',
+  horizontal: 'row',
+};
+
+const DIRECTION_MAPPING = {
+  vertical: 'height',
+  horizontal: 'width',
+};
+
+const RELATIVE_MAPPING = {
+  vertical: 'top',
+  horizontal: 'left',
+};
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 class ChopList extends Component {
 
   constructor(props) {
     super(props);
 
+    // TODO: Move to oneOf propType
+    if (props.direction && ['horizontal', 'vertical'].indexOf(props.direction) < -1) {
+      throw Error('Wrong direction');
+    }
+
     this.state = {
+      direction: props.direction || 'vertical',
       offset: 0,
       overscan: DEFAULT_OVERSCAN,
-      burgerHeight: 0,
+      burger: 0,
       debug: false,
     };
   }
 
-  getCurrentChildrenMeanHeight() {
-    const childHeights = [...this.refs.innerScrollList.children].map(child => child.offsetHeight);
+  getCurrentChildrenMeanSize() {
+    const direction = this.directionProperty();
+    const offsetProperty = `offset${capitalize(direction)}`;
+    const childSizes = [...this.refs.innerScrollList.children].map(child => child[offsetProperty]);
 
-    return childHeights.reduce((h1, h2) => h1 + h2) / childHeights.length;
+    return childSizes.reduce((h1, h2) => h1 + h2) / childSizes.length;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.state.offset !== nextState.offset ||
-           this.state.burgerHeight !== nextState.burgerHeight;
+           this.state.burger !== nextState.burger;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -33,38 +60,57 @@ class ChopList extends Component {
   }
 
   componentDidMount() {
-    const estimatedHeight = this.getCurrentChildrenMeanHeight();
+    const direction = this.directionProperty();
+    const offsetProperty = `offset${capitalize(direction)}`;
+    const estimatedSize = this.getCurrentChildrenMeanSize();
 
-    this.windowSize = Math.ceil(this.refs.list.offsetHeight / estimatedHeight);
+    this.windowSize = Math.ceil(this.refs.list[offsetProperty] / estimatedSize);
 
     // Set real scrollbar size
-    this.refs.innerScrollContainer.style.height = `${this.props.rowCount * estimatedHeight}px`;
+    this.refs.innerScrollContainer.style[direction] = `${this.props.rowCount * estimatedSize}px`;
   }
 
   onScroll(event) {
-    const scrollTop = this.refs.list.scrollTop;
+    const relativeProperty = `scroll${capitalize(this.relativeProperty())}`;
+    const scrollRelative = this.refs.list[relativeProperty];
 
-    const meanHeight = this.getCurrentChildrenMeanHeight();
-    const offset = Math.min(Math.floor(scrollTop / meanHeight), this.props.rowCount - this.windowSize);
-    const burgerHeight = !offset ? 0 : (offset - this.state.overscan) * meanHeight;
+    const meanSize = this.getCurrentChildrenMeanSize();
+    const offset = Math.min(Math.floor(scrollRelative / meanSize), this.props.rowCount - this.windowSize);
+    const burger = !offset ? 0 : (offset - this.state.overscan) * meanSize;
 
     if (this.state.debug) {
       console.group();
       console.log('Offset', offset);
-      console.log('Element size', meanHeight);
+      console.log('Element size', meanSize);
       console.log('Elements', this.props.rowCount);
       console.log('Overscan', this.state.overscan);
-      console.log('WindowHeight', this.refs.list.offsetHeight);
-      console.log('WindowSize', this.refs.list.offsetHeight / meanHeight);
-      console.log('Total', this.props.rowCount * meanHeight);
-      console.log('Burger', burgerHeight);
+      console.log('WindowSize', this.refs.list.offsetSize);
+      console.log('WindowSize', this.refs.list.offsetSize / meanSize);
+      console.log('Total', this.props.rowCount * meanSize);
+      console.log('Burger', burger);
       console.groupEnd();
     }
 
     this.setState({
       offset,
-      burgerHeight: Math.round(burgerHeight)
+      burger: Math.round(burger)
     });
+  }
+
+  directionFlexProperty() {
+    return FLEX_MAPPING[this.state.direction];
+  }
+
+  directionProperty() {
+    return DIRECTION_MAPPING[this.state.direction];
+  }
+
+  inverseDirectionProperty() {
+    return DIRECTION_MAPPING[this.state.direction === 'vertical' ? 'horizontal' : 'vertical'];
+  }
+
+  relativeProperty() {
+    return RELATIVE_MAPPING[this.state.direction];
   }
 
   renderElements(renderedElements, realOffset) {
@@ -76,9 +122,12 @@ class ChopList extends Component {
   }
 
   render() {
-    const { offset, burgerHeight, overscan } = this.state;
-
+    const { offset, burger, overscan } = this.state;
     const realOffset = Math.max(offset - overscan, 0);
+
+    const containerStyle = { flexDirection: this.directionFlexProperty(), [`${this.inverseDirectionProperty()}`]: '100%' };
+    const burgerStyle = { [`${this.directionProperty()}`]: burger };
+
     let renderedElements;
 
     if (this.windowSize) {
@@ -89,9 +138,9 @@ class ChopList extends Component {
 
     return (
       <div ref='list' className="List" onScroll={this.onScroll.bind(this)}>
-        <div ref='innerScrollContainer' className="innerScrollContainer">
-          <div ref='burger' className="Burger" style={ { height: burgerHeight } }/>
-          <div ref='innerScrollList' className="innerScrollList">
+        <div ref='innerScrollContainer' className="innerScrollContainer" style={ containerStyle }>
+          <div ref='burger' className="Burger" style={ burgerStyle }/>
+          <div ref='innerScrollList' className="innerScrollList" style={ containerStyle }>
             {renderedElements > 0 && this.renderElements(renderedElements, realOffset)}
           </div>
         </div>

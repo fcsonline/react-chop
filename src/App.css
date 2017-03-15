@@ -14,3 +14,11 @@
   border: 1px solid #eee;
   padding: 30px;
 }
+
+.HItem {
+  width: 80px;
+  background: lightsalmon;
+  border: 1px solid #eee;
+  padding: 10px;
+}
+

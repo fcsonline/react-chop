@@ -16,17 +16,13 @@
   overflow: hidden;
 
   display: flex;
-  flex-direction: column;
   transform: translateZ(0);
 }
 
 .innerScrollList {
   display: flex;
-  flex-direction: column;
 }
 
 .Burger {
-  height: 100px;
-  background: yellow;
   visibility: hidden;
 }
