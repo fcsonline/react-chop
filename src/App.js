@@ -59,22 +59,46 @@ function rowRendererHorizontal ({ key, index, style}) {
   )
 }
 
+function rowRendererKanban ({ key, index, style}) {
+  return (
+      <div key={key} className='KItem'>
+        <ChopList
+          rowCount={list.length}
+          rowRenderer={rowRenderer}
+        />
+      </div>
+  )
+}
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <h1>Same heights</h1>
-        <ChopList
-          rowCount={list.length}
-          rowRenderer={rowRenderer}
-        />
+        <div style={ {height: '200px'} }>
+          <ChopList
+            rowCount={list.length}
+            rowRenderer={rowRenderer}
+          />
+        </div>
 
         <h1>Same widths</h1>
-        <ChopList
-          rowCount={list.length}
-          rowRenderer={rowRendererHorizontal}
-          direction='horizontal'
-        />
+        <div style={ {height: '200px', width: '500px', margin: '0 auto'} }>
+          <ChopList
+            rowCount={list.length}
+            rowRenderer={rowRendererHorizontal}
+            direction='horizontal'
+          />
+        </div>
+
+        <h1>Kanban</h1>
+        <div style={ {height: '300px'} }>
+          <ChopList
+            rowCount={list.length}
+            rowRenderer={rowRendererKanban}
+            direction='horizontal'
+          />
+        </div>
 
         {
         /*
