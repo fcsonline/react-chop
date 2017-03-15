@@ -75,7 +75,7 @@ class ChopList extends Component {
     const scrollRelative = this.refs.list[relativeProperty];
 
     const meanSize = this.getCurrentChildrenMeanSize();
-    const offset = Math.min(Math.floor(scrollRelative / meanSize), this.props.rowCount - this.windowSize);
+    const offset = Math.min(Math.floor(scrollRelative / meanSize), this.props.rowCount - this.windowSize - this.state.overscan);
     const burger = !offset ? 0 : (offset - this.state.overscan) * meanSize;
 
     if (this.state.debug) {
