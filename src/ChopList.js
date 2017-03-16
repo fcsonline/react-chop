@@ -4,23 +4,20 @@ import './ChopList.css';
 const DEFAULT_OVERSCAN = 5;
 const DEFAULT_INITIAL_ELEMENT = 10;
 
-const FLEX_MAPPING = {
-  vertical: 'column',
-  horizontal: 'row',
-};
+const HORIZONTAL_KEYS = {
+  flex: 'row',
+  offset: 'offsetWidth',
+  dimension: 'width',
+  inverse_dimension: 'height',
+  scroll: 'scrollLeft'
+}
 
-const DIRECTION_MAPPING = {
-  vertical: 'height',
-  horizontal: 'width',
-};
-
-const RELATIVE_MAPPING = {
-  vertical: 'top',
-  horizontal: 'left',
-};
-
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+const VERTICAL_KEYS = {
+  flex: 'column',
+  offset: 'offsetHeight',
+  dimension: 'height',
+  inverse_dimension: 'width',
+  scroll: 'scrollTop'
 }
 
 class ChopList extends Component {
@@ -33,8 +30,11 @@ class ChopList extends Component {
       throw Error('Wrong direction');
     }
 
+    const direction = props.direction || 'vertical';
+    const keys = direction === 'vertical' ? VERTICAL_KEYS : HORIZONTAL_KEYS;
+
     this.state = {
-      direction: props.direction || 'vertical',
+      keys,
       offset: 0,
       overscan: DEFAULT_OVERSCAN,
       burger: 0,
@@ -43,9 +43,7 @@ class ChopList extends Component {
   }
 
   getCurrentChildrenMeanSize() {
-    const direction = this.directionProperty();
-    const offsetProperty = `offset${capitalize(direction)}`;
-    const childSizes = [...this.refs.innerScrollList.children].map(child => child[offsetProperty]);
+    const childSizes = [...this.refs.innerScrollList.children].map(child => child[this.state.keys.offset]);
 
     return childSizes.reduce((h1, h2) => h1 + h2) / childSizes.length;
   }
@@ -60,19 +58,18 @@ class ChopList extends Component {
   }
 
   componentDidMount() {
-    const direction = this.directionProperty();
-    const offsetProperty = `offset${capitalize(direction)}`;
+    const { keys } = this.state;
+
     const estimatedSize = this.getCurrentChildrenMeanSize();
 
-    this.windowSize = Math.ceil(this.refs.list[offsetProperty] / estimatedSize);
+    this.windowSize = Math.ceil(this.refs.list[keys.offset] / estimatedSize);
 
     // Set real scrollbar size
-    this.refs.innerScrollContainer.style[direction] = `${this.props.rowCount * estimatedSize}px`;
+    this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
   }
 
   onScroll(event) {
-    const relativeProperty = `scroll${capitalize(this.relativeProperty())}`;
-    const scrollRelative = this.refs.list[relativeProperty];
+    const scrollRelative = this.refs.list[this.state.keys.scroll];
 
     const meanSize = this.getCurrentChildrenMeanSize();
     const offset = Math.min(Math.floor(scrollRelative / meanSize), this.props.rowCount - this.windowSize - this.state.overscan);
@@ -97,22 +94,6 @@ class ChopList extends Component {
     });
   }
 
-  directionFlexProperty() {
-    return FLEX_MAPPING[this.state.direction];
-  }
-
-  directionProperty() {
-    return DIRECTION_MAPPING[this.state.direction];
-  }
-
-  inverseDirectionProperty() {
-    return DIRECTION_MAPPING[this.state.direction === 'vertical' ? 'horizontal' : 'vertical'];
-  }
-
-  relativeProperty() {
-    return RELATIVE_MAPPING[this.state.direction];
-  }
-
   renderElements(renderedElements, realOffset) {
     return (
       [...Array(renderedElements)].map((x, i) =>
@@ -122,11 +103,11 @@ class ChopList extends Component {
   }
 
   render() {
-    const { offset, burger, overscan } = this.state;
+    const { offset, burger, overscan, keys } = this.state;
     const realOffset = Math.max(offset - overscan, 0);
 
-    const containerStyle = { flexDirection: this.directionFlexProperty(), [`${this.inverseDirectionProperty()}`]: '100%' };
-    const burgerStyle = { [`${this.directionProperty()}`]: burger };
+    const containerStyle = { flexDirection: keys.flex, [`${keys.inverse_dimension}`]: '100%' };
+    const burgerStyle = { [`${keys.dimension}`]: burger };
 
     let renderedElements;
 
