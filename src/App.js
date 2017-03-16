@@ -101,14 +101,16 @@ class App extends Component {
           />
         </div>
 
+        <h1>Different heights</h1>
+        <div style={ {height: '200px'} }>
+          <ChopList
+            rowCount={list.length}
+            rowRenderer={rowRendererDifferent}
+          />
+        </div>
+
         {
         /*
-
-        <h1>Different heights</h1>
-        <ChopList
-          rowCount={list.length}
-          rowRenderer={rowRendererDifferent}
-        />
 
         <h1>Dynamic content</h1>
         <ChopList

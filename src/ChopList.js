@@ -84,6 +84,7 @@ class ChopList extends Component {
           initializing: false,
           windowSize: newWindowSize,
           overscan: this.props.overscan || newWindowSize,
+          estimatedSize,
         });
       }
     }
@@ -117,21 +118,20 @@ class ChopList extends Component {
 
   onScroll(event) {
     const { rowCount } = this.props;
-    const { windowSize, overscan, keys } = this.state;
+    const { windowSize, overscan, keys, estimatedSize } = this.state;
 
     const scrollRelative = this.refs.list[keys.scroll];
-    const meanSize = this.getCurrentChildrenMeanSize();
-    const offset = Math.min(Math.floor(scrollRelative / meanSize), rowCount - windowSize - overscan);
-    const burger = !offset ? 0 : (offset - overscan) * meanSize;
+    const offset = Math.min(Math.floor(scrollRelative / estimatedSize), rowCount - windowSize - overscan);
+    const burger = (offset - overscan) * estimatedSize;
 
     if (this.state.debug) {
       console.group();
       console.log('Offset', offset);
-      console.log('Element size', meanSize);
+      console.log('Element size', estimatedSize);
       console.log('Elements', rowCount);
       console.log('Overscan', overscan);
       console.log('WindowSize', windowSize);
-      console.log('Total', rowCount * meanSize);
+      console.log('Total', rowCount * estimatedSize);
       console.log('Burger', burger);
       console.groupEnd();
     }
