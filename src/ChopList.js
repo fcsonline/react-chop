@@ -89,12 +89,26 @@ class ChopList extends Component {
     }
   }
 
+  handleResize() {
+    this.setState({
+      initializing: true
+    });
+
+    this.chechInitialization();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     this.chechInitialization();
   }
 
   componentDidMount() {
     this.chechInitialization();
+
+    window.addEventListener('resize', this.handleResize);
   }
 
   onScroll(event) {
