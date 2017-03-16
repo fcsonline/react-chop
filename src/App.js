@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import ChopList from './ChopList';
 
-const size = 1000;
+const size = 100000;
 const list = [...Array(size).keys()];
 const images = [
   'https://upload.wikimedia.org/wikipedia/commons/9/9f/Arcade_machine_icon.png',
@@ -83,6 +83,9 @@ class App extends Component {
           />
         </div>
 
+        {
+        /*
+
         <h1>Same widths</h1>
         <div style={ {height: '200px', margin: '0 auto'} }>
           <ChopList
@@ -100,9 +103,6 @@ class App extends Component {
             direction='horizontal'
           />
         </div>
-
-        {
-        /*
 
         <h1>Different heights</h1>
         <ChopList

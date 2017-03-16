@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './ChopList.css';
 
 const DEFAULT_INITIAL_ELEMENTS = 10;
+const SCALE_FACTOR = 100;
 
 const HORIZONTAL_DIRECTION = 'horizontal';
 const VERTICAL_DIRECTION = 'vertical';
@@ -38,7 +39,8 @@ class ChopList extends Component {
       burger: 0,
       windowSize: DEFAULT_INITIAL_ELEMENTS,
       initializing: true,
-      debug: false,
+      debug: true,
+      scale: 1,
     };
   }
 
@@ -55,6 +57,7 @@ class ChopList extends Component {
   }
 
   chechInitialization() {
+    const { rowCount } = this.props;
     const { keys, windowSize } = this.state;
 
     const estimatedSize = this.getCurrentChildrenMeanSize();
@@ -72,18 +75,21 @@ class ChopList extends Component {
         }
 
         this.setState({
-          windowSize: newWindowSize
+          windowSize: newWindowSize,
         });
       } else {
         const newWindowSize = Math.ceil(this.refs.list[keys.offset] / estimatedSize);
+        const newScale = Math.ceil(rowCount / SCALE_FACTOR);
+        const newSize = Math.round(rowCount * estimatedSize / newScale);
 
         // Set real scrollbar size
-        this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
+        this.refs.innerScrollContainer.style[keys.dimension] = `${newSize}px`;
 
         this.setState({
           initializing: false,
           windowSize: newWindowSize,
           overscan: this.props.overscan || newWindowSize,
+          scale: newScale,
         });
       }
     }
@@ -117,12 +123,12 @@ class ChopList extends Component {
 
   onScroll(event) {
     const { rowCount } = this.props;
-    const { windowSize, overscan, keys } = this.state;
+    const { windowSize, overscan, keys, scale } = this.state;
 
-    const scrollRelative = this.refs.list[keys.scroll];
+    const scrollRelative = this.refs.list[keys.scroll] * scale;
     const meanSize = this.getCurrentChildrenMeanSize();
     const offset = Math.min(Math.floor(scrollRelative / meanSize), rowCount - windowSize - overscan);
-    const burger = !offset ? 0 : (offset - overscan) * meanSize;
+    const burger = (offset - overscan) * meanSize;
 
     if (this.state.debug) {
       console.group();
@@ -133,12 +139,13 @@ class ChopList extends Component {
       console.log('WindowSize', windowSize);
       console.log('Total', rowCount * meanSize);
       console.log('Burger', burger);
+      console.log('Scale', scale);
       console.groupEnd();
     }
 
     this.setState({
       offset,
-      burger: Math.round(burger)
+      burger: Math.ceil(burger / scale)
     });
   }
 
