@@ -28,6 +28,8 @@ class ChopList extends Component {
   constructor(props) {
     super(props);
 
+    this.handleResize = this.handleResize.bind(this);
+
     const direction = props.direction || VERTICAL_DIRECTION;
     const keys = direction === HORIZONTAL_DIRECTION ? HORIZONTAL_KEYS : VERTICAL_KEYS;
 
@@ -77,19 +79,23 @@ class ChopList extends Component {
       } else {
         const newWindowSize = Math.ceil(this.refs.list[keys.offset] / estimatedSize);
 
+        // Set real scrollbar size
+        this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
+
         this.setState({
           initializing: false,
           windowSize: newWindowSize,
           overscan: this.props.overscan || newWindowSize,
         });
-
-        // Set real scrollbar size
-        this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
       }
     }
   }
 
   handleResize() {
+    if (!this.state.initializing) {
+      return;
+    }
+
     this.setState({
       initializing: true
     });
