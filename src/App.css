@@ -29,7 +29,8 @@
   padding: 10px;
   box-shadow: 0 1px 3px 0 #ccc;
   margin: 0px 10px 10px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Let's get this party started */
