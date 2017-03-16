@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './ChopList.css';
 
-const DEFAULT_OVERSCAN = 5;
 const DEFAULT_INITIAL_ELEMENTS = 10;
 
 const HORIZONTAL_DIRECTION = 'horizontal';
@@ -36,7 +35,6 @@ class ChopList extends Component {
     this.state = {
       keys,
       offset: 0,
-      overscan: DEFAULT_OVERSCAN,
       burger: 0,
       windowSize: DEFAULT_INITIAL_ELEMENTS,
       initializing: true,
@@ -154,17 +152,16 @@ class ChopList extends Component {
 
   render() {
     const { offset, burger, overscan, keys, initializing, windowSize } = this.state;
-    const realOffset = Math.max(offset - overscan, 0);
 
     const containerStyle = { flexDirection: keys.flex, [`${keys.inverse_dimension}`]: '100%' };
     const burgerStyle = { [`${keys.dimension}`]: burger };
 
-    let renderedElements;
+    let renderedElements = windowSize;
+    let realOffset = 0;
 
-    if (initializing) {
-      renderedElements = windowSize;
-    } else {
+    if (!initializing) {
       renderedElements = windowSize + Math.min(offset, overscan) + Math.min(this.props.rowCount - (overscan + offset), overscan)
+      realOffset = Math.max(offset - overscan, 0);
     }
 
     return (
