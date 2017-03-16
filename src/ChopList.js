@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './ChopList.css';
 
 const DEFAULT_OVERSCAN = 5;
-const DEFAULT_INITIAL_ELEMENT = 10;
+const DEFAULT_INITIAL_ELEMENTS = 10;
 
 const HORIZONTAL_DIRECTION = 'horizontal';
 const VERTICAL_DIRECTION = 'vertical';
@@ -36,6 +36,8 @@ class ChopList extends Component {
       offset: 0,
       overscan: DEFAULT_OVERSCAN,
       burger: 0,
+      windowSize: DEFAULT_INITIAL_ELEMENTS,
+      initializing: true,
       debug: false,
     };
   }
@@ -48,40 +50,70 @@ class ChopList extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.state.offset !== nextState.offset ||
-           this.state.burger !== nextState.burger;
+           this.state.burger !== nextState.burger ||
+           this.state.windowSize !== nextState.windowSize;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // console.log('Render');
-  }
-
-  componentDidMount() {
-    const { keys } = this.state;
+  chechInitialization() {
+    const { keys, windowSize } = this.state;
 
     const estimatedSize = this.getCurrentChildrenMeanSize();
 
-    this.windowSize = Math.ceil(this.refs.list[keys.offset] / estimatedSize);
+    // Just during the initialization
+    if (this.state.initializing) {
+      const containerSize = this.refs.innerScrollContainer[keys.offset];
+      const elementsSize = this.refs.innerScrollList.children.length * estimatedSize;
 
-    // Set real scrollbar size
-    this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
+      if (containerSize > elementsSize) {
+        const newWindowSize = windowSize + DEFAULT_INITIAL_ELEMENTS
+
+        if (this.state.debug) {
+          console.log(`Initializing with ${newWindowSize} elements...`);
+        }
+
+        this.setState({
+          windowSize: newWindowSize
+        });
+      } else {
+        const newWindowSize = Math.ceil(this.refs.list[keys.offset] / estimatedSize);
+
+        this.setState({
+          initializing: false,
+          windowSize: newWindowSize,
+          overscan: this.props.overscan || newWindowSize,
+        });
+
+        // Set real scrollbar size
+        this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.chechInitialization();
+  }
+
+  componentDidMount() {
+    this.chechInitialization();
   }
 
   onScroll(event) {
-    const scrollRelative = this.refs.list[this.state.keys.scroll];
+    const { rowCount } = this.props;
+    const { windowSize, overscan, keys } = this.state;
 
+    const scrollRelative = this.refs.list[keys.scroll];
     const meanSize = this.getCurrentChildrenMeanSize();
-    const offset = Math.min(Math.floor(scrollRelative / meanSize), this.props.rowCount - this.windowSize - this.state.overscan);
-    const burger = !offset ? 0 : (offset - this.state.overscan) * meanSize;
+    const offset = Math.min(Math.floor(scrollRelative / meanSize), rowCount - windowSize - overscan);
+    const burger = !offset ? 0 : (offset - overscan) * meanSize;
 
     if (this.state.debug) {
       console.group();
       console.log('Offset', offset);
       console.log('Element size', meanSize);
-      console.log('Elements', this.props.rowCount);
-      console.log('Overscan', this.state.overscan);
-      console.log('WindowSize', this.refs.list.offsetSize);
-      console.log('WindowSize', this.refs.list.offsetSize / meanSize);
-      console.log('Total', this.props.rowCount * meanSize);
+      console.log('Elements', rowCount);
+      console.log('Overscan', overscan);
+      console.log('WindowSize', windowSize);
+      console.log('Total', rowCount * meanSize);
       console.log('Burger', burger);
       console.groupEnd();
     }
@@ -101,7 +133,7 @@ class ChopList extends Component {
   }
 
   render() {
-    const { offset, burger, overscan, keys } = this.state;
+    const { offset, burger, overscan, keys, initializing, windowSize } = this.state;
     const realOffset = Math.max(offset - overscan, 0);
 
     const containerStyle = { flexDirection: keys.flex, [`${keys.inverse_dimension}`]: '100%' };
@@ -109,10 +141,10 @@ class ChopList extends Component {
 
     let renderedElements;
 
-    if (this.windowSize) {
-      renderedElements = this.windowSize + Math.min(offset, overscan) + Math.min(this.props.rowCount - (overscan + offset), overscan)
+    if (initializing) {
+      renderedElements = windowSize;
     } else {
-      renderedElements = DEFAULT_INITIAL_ELEMENT; // TODO: Decide what for the initial render
+      renderedElements = windowSize + Math.min(offset, overscan) + Math.min(this.props.rowCount - (overscan + offset), overscan)
     }
 
     return (

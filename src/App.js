@@ -84,7 +84,7 @@ class App extends Component {
         </div>
 
         <h1>Same widths</h1>
-        <div style={ {height: '200px', width: '500px', margin: '0 auto'} }>
+        <div style={ {height: '200px', margin: '0 auto'} }>
           <ChopList
             rowCount={list.length}
             rowRenderer={rowRendererHorizontal}
