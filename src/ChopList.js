@@ -4,6 +4,9 @@ import './ChopList.css';
 const DEFAULT_OVERSCAN = 5;
 const DEFAULT_INITIAL_ELEMENT = 10;
 
+const HORIZONTAL_DIRECTION = 'horizontal';
+const VERTICAL_DIRECTION = 'vertical';
+
 const HORIZONTAL_KEYS = {
   flex: 'row',
   offset: 'offsetWidth',
@@ -25,13 +28,8 @@ class ChopList extends Component {
   constructor(props) {
     super(props);
 
-    // TODO: Move to oneOf propType
-    if (props.direction && ['horizontal', 'vertical'].indexOf(props.direction) < -1) {
-      throw Error('Wrong direction');
-    }
-
-    const direction = props.direction || 'vertical';
-    const keys = direction === 'vertical' ? VERTICAL_KEYS : HORIZONTAL_KEYS;
+    const direction = props.direction || VERTICAL_DIRECTION;
+    const keys = direction === HORIZONTAL_DIRECTION ? HORIZONTAL_KEYS : VERTICAL_KEYS;
 
     this.state = {
       keys,
@@ -128,6 +126,12 @@ class ChopList extends Component {
       </div>
     );
   }
+};
+
+ChopList.propTypes = {
+  rowCount: React.PropTypes.number,
+  rowRenderer: React.PropTypes.func,
+  direction: React.PropTypes.oneOf([HORIZONTAL_DIRECTION, VERTICAL_DIRECTION]),
 };
 
 export default ChopList;
