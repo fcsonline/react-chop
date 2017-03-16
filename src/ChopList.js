@@ -161,9 +161,10 @@ class ChopList extends Component {
 };
 
 ChopList.propTypes = {
-  rowCount: React.PropTypes.number,
-  rowRenderer: React.PropTypes.func,
+  rowCount: React.PropTypes.number.isRequired,
+  rowRenderer: React.PropTypes.func.isRequired,
   direction: React.PropTypes.oneOf([HORIZONTAL_DIRECTION, VERTICAL_DIRECTION]),
+  overscan: React.PropTypes.number,
 };
 
 export default ChopList;
