@@ -61,7 +61,7 @@ class ChopList extends Component {
 
     // Just during the initialization
     if (this.state.initializing) {
-      const containerSize = this.refs.innerScrollContainer[keys.offset];
+      const containerSize = this.refs.list[keys.offset];
       const elementsSize = this.refs.innerScrollList.children.length * estimatedSize;
 
       if (containerSize > elementsSize) {
