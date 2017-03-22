@@ -45,11 +45,12 @@ class ChopList extends Component {
   getCurrentChildrenMeanSize() {
     const childSizes = [...this.refs.innerScrollList.children].map(child => child[this.state.keys.offset]);
 
-    return childSizes.reduce((h1, h2) => h1 + h2) / childSizes.length;
+    return childSizes.reduce((h1, h2) => h1 + h2, 0) / childSizes.length;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.offset !== nextState.offset ||
+    return this.props.rowCount !== nextProps.rowCount ||
+           this.state.offset !== nextState.offset ||
            this.state.burger !== nextState.burger ||
            this.state.windowSize !== nextState.windowSize;
   }
