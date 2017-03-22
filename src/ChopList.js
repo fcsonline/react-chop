@@ -123,7 +123,7 @@ class ChopList extends Component {
 
     const scrollRelative = this.refs.list[keys.scroll];
     const offset = Math.min(Math.floor(scrollRelative / estimatedSize), rowCount - windowSize - overscan);
-    const burger = (offset - overscan) * estimatedSize;
+    const burger = Math.max(offset - overscan, 0) * estimatedSize;
 
     if (this.state.debug) {
       console.group();
