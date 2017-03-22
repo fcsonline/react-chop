@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import throttle from 'raf-throttle';
+
 import './ChopList.css';
 
-const DEFAULT_INITIAL_ELEMENTS = 10;
+const DEFAULT_INITIAL_ELEMENTS = 2; // 10
 
 const HORIZONTAL_DIRECTION = 'horizontal';
 const VERTICAL_DIRECTION = 'vertical';
@@ -170,7 +172,7 @@ class ChopList extends Component {
     }
 
     return (
-      <div ref='list' className="List" onScroll={this.onScroll.bind(this)}>
+      <div ref='list' className="List" onScroll={throttle(this.onScroll.bind(this))}>
         <div ref='innerScrollContainer' className="innerScrollContainer" style={ containerStyle }>
           <div ref='burger' className="Burger" style={ burgerStyle }/>
           <div ref='innerScrollList' className="innerScrollList" style={ containerStyle }>
