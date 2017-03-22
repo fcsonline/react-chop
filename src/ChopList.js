@@ -65,6 +65,10 @@ class ChopList extends Component {
       const containerSize = this.refs.list[keys.offset];
       const elementsSize = this.refs.innerScrollList.children.length * estimatedSize;
 
+      if (!containerSize) {
+        console.warn('Chop container has no size!!');
+      }
+
       if (containerSize > elementsSize) {
         const newWindowSize = windowSize + DEFAULT_INITIAL_ELEMENTS
 
