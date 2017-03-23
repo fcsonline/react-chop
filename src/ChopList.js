@@ -49,7 +49,7 @@ class ChopList extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.rowCount !== nextProps.rowCount ||
+    return this.props.itemCount !== nextProps.itemCount ||
            this.state.offset !== nextState.offset ||
            this.state.burger !== nextState.burger ||
            this.state.windowSize !== nextState.windowSize;
@@ -83,7 +83,7 @@ class ChopList extends Component {
         const newWindowSize = Math.ceil(this.refs.list[keys.offset] / estimatedSize);
 
         // Set real scrollbar size
-        this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.rowCount * estimatedSize}px`;
+        this.refs.innerScrollContainer.style[keys.dimension] = `${this.props.itemCount * estimatedSize}px`;
 
         this.setState({
           initializing: false,
@@ -122,21 +122,21 @@ class ChopList extends Component {
   }
 
   onScroll(event) {
-    const { rowCount } = this.props;
+    const { itemCount } = this.props;
     const { windowSize, overscan, keys, estimatedSize } = this.state;
 
     const scrollRelative = this.refs.list[keys.scroll];
-    const offset = Math.min(Math.floor(scrollRelative / estimatedSize), rowCount - windowSize - overscan);
+    const offset = Math.min(Math.floor(scrollRelative / estimatedSize), itemCount - windowSize - overscan);
     const burger = Math.max(offset - overscan, 0) * estimatedSize;
 
     if (this.state.debug) {
       console.group();
       console.log('Offset', offset);
       console.log('Element size', estimatedSize);
-      console.log('Elements', rowCount);
+      console.log('Elements', itemCount);
       console.log('Overscan', overscan);
       console.log('WindowSize', windowSize);
-      console.log('Total', rowCount * estimatedSize);
+      console.log('Total', itemCount * estimatedSize);
       console.log('Burger', burger);
       console.groupEnd();
     }
@@ -150,7 +150,7 @@ class ChopList extends Component {
   renderElements(renderedElements, realOffset) {
     return (
       [...Array(renderedElements)].map((x, i) =>
-        { return this.props.rowRenderer({key: 'k' + (i + realOffset), index: (i + realOffset)}) }
+        { return this.props.itemRenderer({key: 'k' + (i + realOffset), index: (i + realOffset)}) }
       )
     );
   }
@@ -165,7 +165,7 @@ class ChopList extends Component {
     let realOffset = 0;
 
     if (!initializing) {
-      renderedElements = windowSize + Math.min(offset, overscan) + Math.min(this.props.rowCount - (overscan + offset), overscan)
+      renderedElements = windowSize + Math.min(offset, overscan) + Math.min(this.props.itemCount - (overscan + offset), overscan)
       realOffset = Math.max(offset - overscan, 0);
     }
 
@@ -183,8 +183,8 @@ class ChopList extends Component {
 };
 
 ChopList.propTypes = {
-  rowCount: React.PropTypes.number.isRequired,
-  rowRenderer: React.PropTypes.func.isRequired,
+  itemCount: React.PropTypes.number.isRequired,
+  itemRenderer: React.PropTypes.func.isRequired,
   direction: React.PropTypes.oneOf([HORIZONTAL_DIRECTION, VERTICAL_DIRECTION]),
   overscan: React.PropTypes.number,
 };
