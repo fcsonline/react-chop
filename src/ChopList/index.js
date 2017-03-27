@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Measure from 'react-measure';
 import { property } from 'lodash';
 
-import { propTypes, defaultProps, HORIZONTAL_DIRECTION, VERTICAL_DIRECTION } from './propTypes';
-import { getItemsRangeToRender } from  './itemsChopper';
+import { propTypes, defaultProps, HORIZONTAL_DIRECTION } from './propTypes';
+import { getItemsRangeToRender, getNextScrollState } from  './itemsChopper';
 
 import './styles.css';
 
@@ -16,6 +16,7 @@ const HORIZONTAL_LENSES = {
   dimension: property('width'),
   beforeMargin: property('marginLeft'),
   afterMargin: property('marginRight'),
+  scrollClass: 'scrollHorizontal',
   makeStyles: (width) => ({width}),
   log: () => {},
 }
@@ -26,6 +27,7 @@ const VERTICAL_LENSES = {
   dimension: property('height'),
   beforeMargin: property('marginTop'),
   afterMargin: property('marginBottom'),
+  scrollClass: 'scrollVertical',
   makeStyles: (height) => ({height}),
   log: (...args) => console.log(...args),
 }
@@ -97,7 +99,7 @@ export default class ChopList extends Component {
 
   startBuffering() {
     this.lenses.log('buffering...');
-    const containerSize = this.getSize(this.refs.list);
+    const containerSize = this.getSize(this._list);
 
     if (!containerSize) {
       this.lenses.log('Chop container has no size!!');
@@ -174,34 +176,20 @@ export default class ChopList extends Component {
   }
 
   onScroll(event) {
+    console.assert(!this._list, 'List undefined?', this); // WARNING: Sometimes refs.list is undefined! Protect from that
+
+    const currentScrollPosition = this.lenses.scroll(this._list);
     const { itemCount } = this.props;
     const { windowCount, estimatedItemSize } = this.state;
     const overscan = this.getOverscan();
 
-    // WARNING: Sometimes refs.list is undefined! Protect from that
-    const currentScrollPosition = this.lenses.scroll(this.refs.list);
-
-    const startIndex = Math.floor(currentScrollPosition / estimatedItemSize);
-    const maxIndex = Math.max(0, itemCount - windowCount - overscan);
-    const offsetCount = Math.min(startIndex, maxIndex);
-    const burgerCount = Math.max(0, offsetCount - overscan);
-
-    this.setState({
-      offset: offsetCount,
-      burgerCount
-    });
-  }
-
-  getClasses() {
-    if (this.props.direction === HORIZONTAL_DIRECTION) {
-      return 'scrollHorizontal';
-    }
-
-    if (this.props.direction === VERTICAL_DIRECTION) {
-      return 'scrollVertical';
-    }
-
-    return '';
+    this.setState(getNextScrollState({
+      itemCount,
+      windowCount,
+      estimatedItemSize,
+      overscan,
+      currentScrollPosition
+    }));
   }
 
   getStyles() {
@@ -230,11 +218,11 @@ export default class ChopList extends Component {
   }
 
   render() {
-    const scrollClassName = this.getClasses();
+    const scrollClassName = this.lenses.scrollClass;
     const { containerStyle, burgerStyle } = this.getStyles();
 
     return (
-      <div ref='list' className='ChopList' onScroll={this.onScroll}>
+      <div ref={(c) => (this._list = c)} className='ChopList' onScroll={this.onScroll}>
         <div ref='innerScrollContainer' className={`innerScrollContainer ${scrollClassName}`} style={containerStyle}>
           <div className='Burger' style={burgerStyle}/>
           <Measure

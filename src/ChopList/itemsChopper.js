@@ -13,3 +13,15 @@ export function getItemsRangeToRender({ itemCount, windowCount, offset, overscan
     .from({length: itemsCountToRender}, (_, i) => renderOffset + i)
     .filter((i) => i < itemCount);
 }
+
+export function  getNextScrollState({ itemCount, windowCount, estimatedItemSize, overscan, currentScrollPosition }) {
+  const startIndex = Math.floor(currentScrollPosition / estimatedItemSize);
+  const maxIndex = Math.max(0, itemCount - windowCount - overscan);
+  const offset = Math.min(startIndex, maxIndex);
+  const burgerCount = Math.max(0, offset - overscan);
+
+  return {
+    offset: offset,
+    burgerCount
+  };
+}
