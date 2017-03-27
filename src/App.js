@@ -16,7 +16,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      list: Array.apply(null, {length: SIZE}).map(Number.call, Number)
+      list: Array.from({length: SIZE}, (_, i) => i)
     };
   }
 
@@ -155,20 +155,28 @@ class App extends Component {
         <button onClick={this.onAddEnd.bind(this)}>Add end</button>
         <button onClick={this.onRemoveEnd.bind(this)}>Remove end</button>
 
-        <h1>Same heights</h1>
-        <div style={ {height: '200px'} }>
-          <ChopList
-            itemCount={list.length}
-            itemRenderer={this.itemRenderer.bind(this)}
-          />
-        </div>
-
         <h1>Same widths</h1>
         <div style={ {height: '200px', margin: '0 auto'} }>
           <ChopList
             itemCount={list.length}
             itemRenderer={this.itemRendererHorizontal.bind(this)}
             direction='horizontal'
+          />
+        </div>
+
+        <h1>Empty list</h1>
+        <div style={ {height: '200px'} }>
+          <ChopList
+            itemCount={0}
+            itemRenderer={this.itemRenderer.bind(this)}
+          />
+        </div>
+
+        <h1>Same heights</h1>
+        <div style={ {height: '200px'} }>
+          <ChopList
+            itemCount={list.length}
+            itemRenderer={this.itemRenderer.bind(this)}
           />
         </div>
 
@@ -188,10 +196,6 @@ class App extends Component {
             itemRenderer={this.itemRendererDifferent.bind(this)}
           />
         </div>
-
-        {
-        /*
-
         <h1>Dynamic content</h1>
         <ChopList
           itemCount={list.length}
@@ -203,6 +207,9 @@ class App extends Component {
           itemCount={list.length}
           itemRenderer={this.itemRendererTextAreas.bind(this)}
         />
+        {
+        /*
+
         */
         }
 

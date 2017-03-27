@@ -15,7 +15,7 @@ const HORIZONTAL_LENSES = {
   afterMargin: property('marginRight'),
   scrollClass: 'scrollHorizontal',
   makeStyles: (width) => ({width}),
-  log: () => {},
+  log: (...args) => console.log(...args),
 }
 
 const VERTICAL_LENSES = {
