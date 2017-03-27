@@ -3,12 +3,9 @@ import Measure from 'react-measure';
 import { property } from 'lodash';
 
 import { propTypes, defaultProps, HORIZONTAL_DIRECTION } from './propTypes';
-import { getItemsRangeToRender, getNextScrollState } from  './itemsChopper';
+import { getItemsRangeToRender, getNextScrollState, getFinalBufferingState, getNextBufferingState } from  './itemsChopper';
 
 import './styles.css';
-
-// TODO: Move to a prop
-const DEFAULT_INITIAL_ELEMENTS = 1; // 10
 
 const HORIZONTAL_LENSES = {
   size: property('offsetWidth'),
@@ -66,7 +63,7 @@ export default class ChopList extends Component {
 
     this.state = {
       offset: 0, // index
-      windowCount: DEFAULT_INITIAL_ELEMENTS, // amount
+      windowCount: 1, // amount
       burgerCount: 0, // amount
       estimatedItemSize: 0, // px
       isBuffering: false,
@@ -114,10 +111,6 @@ export default class ChopList extends Component {
       return;
     }
 
-    if (renderedItemsTotalSize === 0) {
-      return;
-    }
-
     const shouldRenderMoreItems = this.shouldRenderMoreItems(
       containerSize,
       renderedItemsTotalSize,
@@ -127,21 +120,11 @@ export default class ChopList extends Component {
 
     if (shouldRenderMoreItems) {
       this.lenses.log(`need more items: rendered ${renderedItemsCount} items`);
-      this.setState((prevState) => ({
-        isBuffering: true,
-        windowCount: prevState.windowCount + DEFAULT_INITIAL_ELEMENTS,
-      }));
+      this.setState(getNextBufferingState);
       return;
     }
 
-    const estimatedItemSize = renderedItemsTotalSize / renderedItemsCount;
-    const newWindowCount = Math.ceil(containerSize / estimatedItemSize);
-
-    this.setState({
-      isBuffering: false,
-      windowCount: newWindowCount,
-      estimatedItemSize,
-    });
+    this.setState(getFinalBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize }));
   }
 
   getOverscan() {

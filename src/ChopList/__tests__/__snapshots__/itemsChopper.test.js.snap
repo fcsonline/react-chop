@@ -6,7 +6,11 @@ exports[`base 2 1`] = `"[10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]"`;
 
 exports[`base 3 1`] = `"[0,1,2,3,4]"`;
 
+exports[`final buffering state 1`] = `"{\\"isBuffering\\":false,\\"windowCount\\":11,\\"estimatedItemSize\\":50}"`;
+
 exports[`initial scroll 1`] = `"{\\"offset\\":0,\\"burgerCount\\":0}"`;
+
+exports[`next buffering state 1`] = `"{\\"isBuffering\\":true,\\"windowCount\\":21}"`;
 
 exports[`no items 1`] = `"[]"`;
 

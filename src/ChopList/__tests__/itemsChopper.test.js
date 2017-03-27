@@ -1,4 +1,4 @@
-import { getItemsRangeToRender, getNextScrollState } from '../itemsChopper';
+import { getItemsRangeToRender, getNextScrollState, getFinalBufferingState, getNextBufferingState } from '../itemsChopper';
 
 test('base', () => {
   const actual = getItemsRangeToRender({
@@ -108,6 +108,24 @@ test('scroll to bottom', () => {
     estimatedItemSize: 50,
     overscan: 5,
     currentScrollPosition: 1100
+  });
+
+  expect(JSON.stringify(actual)).toMatchSnapshot();
+});
+
+test('final buffering state', () => {
+  const actual = getFinalBufferingState({
+    renderedItemsTotalSize: 550,
+    renderedItemsCount: 11,
+    containerSize: 520,
+  });
+
+  expect(JSON.stringify(actual)).toMatchSnapshot();
+});
+
+test('next buffering state', () => {
+  const actual = getNextBufferingState({
+    windowCount: 20,
   });
 
   expect(JSON.stringify(actual)).toMatchSnapshot();
