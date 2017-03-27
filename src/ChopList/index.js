@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Measure from 'react-measure';
-import { property } from 'lodash';
+import { property, debounce, throttle } from 'lodash';
 
 import { propTypes, defaultProps, HORIZONTAL_DIRECTION } from './propTypes';
 import { getItemsRangeToRender, getNextScrollState, getFinalBufferingState, getNextBufferingState } from  './itemsChopper';
@@ -40,8 +40,8 @@ export default class ChopList extends Component {
     this.onScroll = this.onScroll.bind(this);
 
     // Review this
-    // this.onResize = debounce(this.onResize, 150);
-    // this.onScroll = throttle(this.onScroll, 50);
+    this.onResize = debounce(this.onResize, 150);
+    this.onScroll = throttle(this.onScroll, 50);
 
     this.lenses = props.direction === HORIZONTAL_DIRECTION ? HORIZONTAL_LENSES : VERTICAL_LENSES;
 
