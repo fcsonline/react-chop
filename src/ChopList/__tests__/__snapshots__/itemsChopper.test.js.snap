@@ -12,16 +12,10 @@ exports[`no items 1`] = `"[]"`;
 
 exports[`no overscan 1`] = `"[2,3,4,5,6]"`;
 
-exports[`offset greather than itemCount 1`] = `"[9]"`;
-
-exports[`offset less than 0 1`] = `"[0,1,2,3,4]"`;
-
 exports[`overscan greather than itemCount 1`] = `"[]"`;
 
 exports[`scroll to bottom 1`] = `"{\\"offset\\":20,\\"burgerCount\\":15}"`;
 
 exports[`scroll to middle 1`] = `"{\\"offset\\":8,\\"burgerCount\\":3}"`;
-
-exports[`windowCount equal to offset 1`] = `"[0]"`;
 
 exports[`windowCount of 1 1`] = `"[5]"`;

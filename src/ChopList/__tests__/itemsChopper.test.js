@@ -66,39 +66,6 @@ test('windowCount of 1', () => {
   expect(JSON.stringify(actual)).toMatchSnapshot();
 });
 
-test('offset greather than itemCount', () => {
-  const actual = getItemsRangeToRender({
-    itemCount: 10,
-    windowCount: 5,
-    offset: 11,
-    overscan: 0,
-  });
-
-  expect(JSON.stringify(actual)).toMatchSnapshot();
-});
-
-test('offset less than 0', () => {
-  const actual = getItemsRangeToRender({
-    itemCount: 10,
-    windowCount: 5,
-    offset: -2,
-    overscan: 0,
-  });
-
-  expect(JSON.stringify(actual)).toMatchSnapshot();
-});
-
-test('windowCount equal to offset', () => {
-  const actual = getItemsRangeToRender({
-    itemCount: 1,
-    windowCount: 1,
-    offset: 1,
-    overscan: 0,
-  });
-
-  expect(JSON.stringify(actual)).toMatchSnapshot();
-});
-
 test('overscan greather than itemCount', () => {
   const actual = getItemsRangeToRender({
     itemCount: 5,
@@ -141,18 +108,6 @@ test('scroll to bottom', () => {
     estimatedItemSize: 50,
     overscan: 5,
     currentScrollPosition: 1100
-  });
-
-  expect(JSON.stringify(actual)).toMatchSnapshot();
-});
-
-test('scroll with empty list', () => {
-  const actual = getNextScrollState({
-    itemCount: 0,
-    windowCount: 0,
-    estimatedItemSize: 0,
-    overscan: o,
-    currentScrollPosition: 0
   });
 
   expect(JSON.stringify(actual)).toMatchSnapshot();
