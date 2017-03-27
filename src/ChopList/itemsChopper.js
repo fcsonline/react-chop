@@ -38,9 +38,12 @@ export function getFinalBufferingState({ renderedItemsTotalSize, renderedItemsCo
   };
 }
 
-export function getNextBufferingState(prevState) {
-  return {
+export function getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize }) {
+  const itemSize = renderedItemsTotalSize / renderedItemsCount;
+  const nextBump = Math.round(containerSize / itemSize);
+
+  return (prevState) => ({
     isBuffering: true,
-    windowCount: prevState.windowCount + 1, // TODO: Buffer faster against reflows
-  };
+    windowCount: prevState.windowCount + nextBump,
+  });
 }

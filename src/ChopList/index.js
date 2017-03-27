@@ -119,7 +119,7 @@ export default class ChopList extends Component {
 
     if (shouldRenderMoreItems) {
       this.lenses.log(`need more items: rendered ${renderedItemsCount} items`);
-      this.setState(getNextBufferingState);
+      this.setState(getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize }));
       return;
     }
 
