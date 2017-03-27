@@ -82,7 +82,7 @@ export default class ChopList extends Component {
   }
 
   getRenderedItems() {
-    return [...this.refs.innerScrollList.children];
+    return [...this._innerScrollList.children];
   }
 
   getRenderedItemsSizes() {
@@ -157,10 +157,6 @@ export default class ChopList extends Component {
     this.startBuffering();
   }
 
-  componentWillUnmount() {
-    // window.removeEventListener('resize', this.onResize);
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.isBuffering) {
       return;
@@ -172,13 +168,11 @@ export default class ChopList extends Component {
 
   componentDidMount() {
     this.startBuffering();
-    // window.addEventListener('resize', this.onResize);
   }
 
   onScroll(event) {
-    console.assert(!this._list, 'List undefined?', this); // WARNING: Sometimes refs.list is undefined! Protect from that
-
     const currentScrollPosition = this.lenses.scroll(this._list);
+
     const { itemCount } = this.props;
     const { windowCount, estimatedItemSize } = this.state;
     const overscan = this.getOverscan();
@@ -222,13 +216,11 @@ export default class ChopList extends Component {
     const { containerStyle, burgerStyle } = this.getStyles();
 
     return (
-      <div ref={(c) => (this._list = c)} className='ChopList' onScroll={this.onScroll}>
-        <div ref='innerScrollContainer' className={`innerScrollContainer ${scrollClassName}`} style={containerStyle}>
+      <div className='ChopList' ref={(c) => (this._list = c)} onScroll={this.onScroll}>
+        <div className={`innerScrollContainer ${scrollClassName}`} style={containerStyle}>
           <div className='Burger' style={burgerStyle}/>
-          <Measure
-            onMeasure={this.onResize}
-          >
-            <div ref='innerScrollList' className={`innerScrollList ${scrollClassName}`}>
+          <Measure onMeasure={this.onResize}>
+            <div className={`innerScrollList ${scrollClassName}`} ref={(c) => (this._innerScrollList = c)}>
               {this.renderElements()}
             </div>
           </Measure>
