@@ -10,7 +10,7 @@ exports[`final buffering state 1`] = `"{\\"isBuffering\\":false,\\"windowCount\\
 
 exports[`initial scroll 1`] = `"{\\"offset\\":0,\\"burgerCount\\":0}"`;
 
-exports[`next buffering state 1`] = `"{\\"isBuffering\\":true,\\"windowCount\\":21}"`;
+exports[`next buffering state 1`] = `"{\\"isBuffering\\":true,\\"windowCount\\":30}"`;
 
 exports[`no items 1`] = `"[]"`;
 

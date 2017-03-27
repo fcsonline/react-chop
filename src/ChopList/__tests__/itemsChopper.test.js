@@ -125,6 +125,10 @@ test('final buffering state', () => {
 
 test('next buffering state', () => {
   const actual = getNextBufferingState({
+    renderedItemsTotalSize: 500,
+    renderedItemsCount: 10,
+    containerSize: 500,
+  })({
     windowCount: 20,
   });
 
