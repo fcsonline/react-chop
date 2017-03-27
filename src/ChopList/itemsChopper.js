@@ -21,7 +21,7 @@ export function  getNextScrollState({ itemCount, windowCount, estimatedItemSize,
   const burgerCount = Math.max(0, offset - overscan);
 
   return {
-    offset: offset,
+    offset,
     burgerCount
   };
 }
