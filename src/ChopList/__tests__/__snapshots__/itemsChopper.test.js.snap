@@ -6,8 +6,6 @@ exports[`base 2 1`] = `"[10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]"`;
 
 exports[`base 3 1`] = `"[0,1,2,3,4]"`;
 
-exports[`base 4 1`] = `"[]"`;
-
 exports[`no items 1`] = `"[]"`;
 
 exports[`no overscan 1`] = `"[2,3,4,5,6]"`;
