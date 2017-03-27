@@ -103,13 +103,12 @@ export default class ChopList extends Component {
       return;
     }
 
-    const renderedItemsTotalSize = this.getRenderedItemsTotalSize();
-    const renderedItemsCount = this.getRenderedItems().length;
-
-    // TODO: Watch out for 0 division
-    if (renderedItemsCount === 0) {
+    if (this.props.itemCount === 0) {
       return;
     }
+
+    const renderedItemsCount = this.getRenderedItems().length;
+    const renderedItemsTotalSize = this.getRenderedItemsTotalSize();
 
     const shouldRenderMoreItems = this.shouldRenderMoreItems(
       containerSize,
