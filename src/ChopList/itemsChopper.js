@@ -26,3 +26,21 @@ export function getNextScrollState({ itemCount, windowCount, estimatedItemSize, 
     burgerCount
   };
 }
+
+export function getFinalBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize }) {
+  const estimatedItemSize = renderedItemsTotalSize / renderedItemsCount;
+  const newWindowCount = Math.ceil(containerSize / estimatedItemSize);
+
+  return {
+    isBuffering: false,
+    windowCount: newWindowCount,
+    estimatedItemSize,
+  };
+}
+
+export function getNextBufferingState(prevState) {
+  return {
+    isBuffering: true,
+    windowCount: prevState.windowCount + 1, // TODO: Buffer faster against reflows
+  };
+}
