@@ -15,7 +15,7 @@ const HORIZONTAL_LENSES = {
   afterMargin: property('marginRight'),
   scrollClass: 'scrollHorizontal',
   makeStyles: (width) => ({width}),
-  log: (...args) => console.log(...args),
+  log: () => {},
 }
 
 const VERTICAL_LENSES = {
@@ -26,12 +26,10 @@ const VERTICAL_LENSES = {
   afterMargin: property('marginBottom'),
   scrollClass: 'scrollVertical',
   makeStyles: (height) => ({height}),
-  log: (...args) => console.log(...args),
+  log: () => {},
 }
 
-export default class ChopList extends Component {
-  static propTypes = propTypes;
-  static defaultProps = defaultProps;
+class ChopList extends Component {
 
   constructor(props) {
     super(props);
@@ -46,6 +44,7 @@ export default class ChopList extends Component {
     this.lenses = props.direction === HORIZONTAL_DIRECTION ? HORIZONTAL_LENSES : VERTICAL_LENSES;
 
     this.getSize = (child) => {
+      // More info here: https://facebook.github.io/react/docs/refs-and-the-dom.html#caveats
       if (!child) {
         console.warn(`empty child`);
         return 0;
@@ -211,3 +210,8 @@ export default class ChopList extends Component {
     );
   }
 };
+
+ChopList.propTypes = propTypes;
+ChopList.defaultProps = defaultProps;
+
+export default ChopList;
