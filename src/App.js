@@ -149,8 +149,16 @@ class App extends Component {
     })
   }
 
+  onScrollToItem() {
+    const scrollToItem = Math.floor(Math.random() * this.state.list.length);
+
+    this.setState({
+      scrollToItem
+    })
+  }
+
   render() {
-    const { list, scrollTo } = this.state;
+    const { list, scrollTo, scrollToItem } = this.state;
 
     return (
       <div className="App">
@@ -163,7 +171,8 @@ class App extends Component {
         <button onClick={this.onAddEnd.bind(this)}>Add end</button>
         <button onClick={this.onRemoveEnd.bind(this)}>Remove end</button>
 
-        <button onClick={this.onScrollTo.bind(this)}>Scroll</button>
+        <button onClick={this.onScrollTo.bind(this)}>Scrolled to { scrollTo || '??' } px</button>
+        <button onClick={this.onScrollToItem.bind(this)}>Scrolled to Item { scrollToItem || '??' }</button>
 
         <h1>Same heights</h1>
         <div style={ {height: '200px'} }>
@@ -171,6 +180,7 @@ class App extends Component {
             itemCount={list.length}
             itemRenderer={this.itemRenderer.bind(this)}
             scrollTo={scrollTo}
+            scrollToItem={scrollToItem}
           />
         </div>
 

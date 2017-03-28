@@ -143,6 +143,11 @@ class ChopList extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.scrollTo !== this.props.scrollTo) {
       this.lenses.setScroll(this._list, nextProps.scrollTo);
+    } else if (nextProps.scrollToItem !== this.props.scrollToItem) {
+      const { estimatedItemSize } = this.state;
+      const estimatedScrollPosition = estimatedItemSize * nextProps.scrollToItem;
+
+      this.lenses.setScroll(this._list, estimatedScrollPosition);
     }
   }
 

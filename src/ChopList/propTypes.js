@@ -9,6 +9,7 @@ export const propTypes = {
   overscan: PropTypes.number,
   direction: PropTypes.oneOf([HORIZONTAL_DIRECTION, VERTICAL_DIRECTION]),
   scrollTo: PropTypes.number,
+  scrollToItem: PropTypes.number,
 };
 
 export const defaultProps = {
