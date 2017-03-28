@@ -20,7 +20,9 @@
     "lodash": "^4.17.4",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-measure": "git://github.com/fcsonline/react-measure#5dd124c2da628f0460a100c42e1c492531b17b49"
+    "react-measure": "git://github.com/fcsonline/react-measure#5dd124c2da628f0460a100c42e1c492531b17b49",
+    "react-measure": "^1.4.6",
+    "react-scripts": "0.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
