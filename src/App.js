@@ -141,8 +141,16 @@ class App extends Component {
     });
   }
 
+  onScrollTo() {
+    const scrollTo = Math.floor(Math.random() * 20000);
+
+    this.setState({
+      scrollTo
+    })
+  }
+
   render() {
-    const { list } = this.state;
+    const { list, scrollTo } = this.state;
 
     return (
       <div className="App">
@@ -155,28 +163,24 @@ class App extends Component {
         <button onClick={this.onAddEnd.bind(this)}>Add end</button>
         <button onClick={this.onRemoveEnd.bind(this)}>Remove end</button>
 
-        <h1>Same widths</h1>
-        <div style={ {height: '200px', margin: '0 auto'} }>
-          <ChopList
-            itemCount={list.length}
-            itemRenderer={this.itemRendererHorizontal.bind(this)}
-            direction='horizontal'
-          />
-        </div>
-
-        <h1>Empty list</h1>
-        <div style={ {height: '200px'} }>
-          <ChopList
-            itemCount={0}
-            itemRenderer={this.itemRenderer.bind(this)}
-          />
-        </div>
+        <button onClick={this.onScrollTo.bind(this)}>Scroll</button>
 
         <h1>Same heights</h1>
         <div style={ {height: '200px'} }>
           <ChopList
             itemCount={list.length}
             itemRenderer={this.itemRenderer.bind(this)}
+            scrollTo={scrollTo}
+          />
+        </div>
+
+        <h1>Same widths</h1>
+        <div style={ {height: '200px', margin: '0 auto'} }>
+          <ChopList
+            itemCount={list.length}
+            itemRenderer={this.itemRendererHorizontal.bind(this)}
+            direction='horizontal'
+            scrollTo={scrollTo}
           />
         </div>
 
@@ -186,6 +190,17 @@ class App extends Component {
             itemCount={list.length}
             itemRenderer={this.itemRendererKanban.bind(this)}
             direction='horizontal'
+          />
+        </div>
+
+        {
+        /*
+
+        <h1>Empty list</h1>
+        <div style={ {height: '200px'} }>
+          <ChopList
+            itemCount={0}
+            itemRenderer={this.itemRenderer.bind(this)}
           />
         </div>
 
@@ -207,8 +222,6 @@ class App extends Component {
           itemCount={list.length}
           itemRenderer={this.itemRendererTextAreas.bind(this)}
         />
-        {
-        /*
 
         */
         }

@@ -9,7 +9,8 @@ import './styles.css';
 
 const HORIZONTAL_LENSES = {
   size: property('offsetWidth'),
-  scroll: property('scrollLeft'),
+  getScroll: property('scrollLeft'),
+  setScroll: (child, value) => { child['scrollLeft'] = value },
   dimension: property('width'),
   beforeMargin: property('marginLeft'),
   afterMargin: property('marginRight'),
@@ -20,7 +21,8 @@ const HORIZONTAL_LENSES = {
 
 const VERTICAL_LENSES = {
   size: property('offsetHeight'),
-  scroll: property('scrollTop'),
+  getScroll: property('scrollTop'),
+  setScroll: (child, value) => { child['scrollTop'] = value },
   dimension: property('height'),
   beforeMargin: property('marginTop'),
   afterMargin: property('marginBottom'),
@@ -138,6 +140,12 @@ class ChopList extends Component {
     this.startBuffering();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.scrollTo !== this.props.scrollTo) {
+      this.lenses.setScroll(this._list, nextProps.scrollTo);
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (!this.state.isBuffering) {
       return;
@@ -152,8 +160,12 @@ class ChopList extends Component {
   }
 
   onScroll(event) {
-    const currentScrollPosition = this.lenses.scroll(this._list);
+    const currentScrollPosition = this.lenses.getScroll(this._list);
 
+    this.scrollTo(currentScrollPosition);
+  }
+
+  scrollTo(currentScrollPosition) {
     const { itemCount } = this.props;
     const { windowCount, estimatedItemSize } = this.state;
     const overscan = this.getOverscan();

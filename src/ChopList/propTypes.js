@@ -8,6 +8,7 @@ export const propTypes = {
   itemRenderer: PropTypes.func.isRequired,
   overscan: PropTypes.number,
   direction: PropTypes.oneOf([HORIZONTAL_DIRECTION, VERTICAL_DIRECTION]),
+  scrollTo: PropTypes.number,
 };
 
 export const defaultProps = {
