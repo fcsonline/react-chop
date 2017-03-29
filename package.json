@@ -41,10 +41,18 @@
     "start": "react-scripts start",
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "jest --no-cache",
+    "test:coverage": "nwb test --coverage",
+    "test:watch": "nwb test --server"
   },
   "jest": {
+    "transform": {
+      "^.+\\.js$": "<rootDir>/jest.transform.js"
+    },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/es/",
+      "<rootDir>/lib/"
+    ],
     "moduleNameMapper": {
       "\\.(css)$": "<rootDir>/node_modules/jest-css-modules"
     }
