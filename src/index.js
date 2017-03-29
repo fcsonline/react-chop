@@ -85,7 +85,6 @@ class ChopList extends Component {
   }
 
   getRenderedItemsSizes() {
-    console.log('FCS', this.getRenderedItems());
     return this.getRenderedItems().map((child) => this.getSize(child));
   }
 
