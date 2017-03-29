@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
-import ChopList from './ChopList';
+import {render} from 'react-dom'
+
+import './styles.css';
+import ChopList from '../../src'
 
 const SIZE = 1000;
-const images = [
-  'https://upload.wikimedia.org/wikipedia/commons/9/9f/Arcade_machine_icon.png',
-  'http://vignette2.wikia.nocookie.net/mariokart/images/9/91/MK8_Yoshi_Icon.png',
-  'http://4.bp.blogspot.com/-QCsT_UnLHFM/VidICHb1MdI/AAAAAAAAAMo/RNog69J7kzM/s1600/gnome-games.png',
-  'http://png-5.findicons.com/files/icons/2297/super_mario/256/mushroom_1up.png'
-]
 
-class App extends Component {
+class Demo extends Component {
 
   constructor(props) {
     super(props);
@@ -26,21 +22,6 @@ class App extends Component {
     return (
         <div key={key} className='Item'>
           <textarea defaultValue={list[index]}/>
-        </div>
-    )
-  }
-
-  itemRendererImages ({ key, index, style}) {
-    const { list } = this.state;
-    const icon = index % 7 === 3;
-
-    return (
-        <div key={key} className='Item'>
-          {list[index]}
-
-          {icon && (
-            <img src={images[index % images.length]} role='presentation' style={ {maxWidth: 150} } />
-          )}
         </div>
     )
   }
@@ -221,11 +202,6 @@ class App extends Component {
             itemRenderer={this.itemRendererDifferent.bind(this)}
           />
         </div>
-        <h1>Dynamic content</h1>
-        <ChopList
-          itemCount={list.length}
-          itemRenderer={this.itemRendererImages.bind(this)}
-        />
 
         <h1>Dynamic heights</h1>
         <ChopList
@@ -241,4 +217,4 @@ class App extends Component {
   }
 }
 
-export default App;
+render(<Demo/>, document.querySelector('#demo'))
