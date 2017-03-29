@@ -39,20 +39,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "test": "jest"
+    "build": "nwb build-react-component",
+    "clean": "nwb clean-module && npm clean-demo",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "jest": {
     "moduleNameMapper": {
       "\\.(css)$": "<rootDir>/node_modules/jest-css-modules"
     }
-  },
-  "scripts": {
-    "build": "nwb build-react-component",
-    "clean": "nwb clean-module && npm clean-demo",
-    "start": "nwb serve-react-demo",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
   }
 }
