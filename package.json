@@ -1,6 +1,6 @@
 {
   "name": "react-chop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A react-virtualized alternative without measuring",
   "repository": "git@github.com:fcsonline/react-chop.git",
   "author": "Ferran Basora <fcsonline@gmail.com>",
@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "nwb build-react-component",
+    "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
     "test": "jest",
     "test:watch": "jest --watchAll"
