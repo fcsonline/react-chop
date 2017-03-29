@@ -38,7 +38,7 @@
     "react-scripts": "0.6.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "nwb serve-react-demo",
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
     "test": "jest --no-cache",
