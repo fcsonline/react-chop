@@ -33,7 +33,7 @@ yarn add react-chop
 For example, take the following code:
 
 ```js
-import ChopList from './ChopList';
+import ChopList from 'react-chop';
 
 const SIZE = 10000;
 
