@@ -1,4 +1,4 @@
-.List {
+.ChopList {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -7,6 +7,10 @@
   will-change: transform;
   overflow: auto;
   margin: auto;
+}
+
+.Burger {
+  visibility: hidden;
 }
 
 .innerScrollContainer {
@@ -22,6 +26,12 @@
   display: flex;
 }
 
-.Burger {
-  visibility: hidden;
+.scrollHorizontal {
+  flex-direction: row;
+  height: 100%;
+}
+
+.scrollVertical {
+  flex-direction: column;
+  width: 100%;
 }

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`base 1`] = `"[0,1,2,3,4,5,6,7,8,9]"`;
+
+exports[`base 2 1`] = `"[10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]"`;
+
+exports[`base 3 1`] = `"[0,1,2,3,4]"`;
+
+exports[`final buffering state 1`] = `"{\\"isBuffering\\":false,\\"windowCount\\":11,\\"estimatedItemSize\\":50}"`;
+
+exports[`initial scroll 1`] = `"{\\"offset\\":0,\\"burgerCount\\":0}"`;
+
+exports[`next buffering state 1`] = `"{\\"isBuffering\\":true,\\"windowCount\\":30}"`;
+
+exports[`no items 1`] = `"[]"`;
+
+exports[`no overscan 1`] = `"[2,3,4,5,6]"`;
+
+exports[`overscan greather than itemCount 1`] = `"[]"`;
+
+exports[`scroll to bottom 1`] = `"{\\"offset\\":20,\\"burgerCount\\":15}"`;
+
+exports[`scroll to middle 1`] = `"{\\"offset\\":8,\\"burgerCount\\":3}"`;
+
+exports[`windowCount of 1 1`] = `"[5]"`;

@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic chop list 1`] = `
+<div
+  style={
+    Object {
+      "height": 200,
+    }
+  }
+>
+  <div
+    className="ChopList"
+    onScroll={[Function]}
+  >
+    <div
+      className="innerScrollContainer scrollVertical"
+      style={
+        Object {
+          "height": 0,
+        }
+      }
+    >
+      <div
+        className="Burger"
+        style={
+          Object {
+            "height": 0,
+          }
+        }
+      />
+      <div>
+        <div
+          className="innerScrollList scrollVertical"
+        >
+          <a
+            href="#"
+          >
+            test 0
+          </a>
+          <a
+            href="#"
+          >
+            test 1
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`chop list with a custom overscan 1`] = `
+<div
+  style={
+    Object {
+      "height": 200,
+    }
+  }
+>
+  <div
+    className="ChopList"
+    onScroll={[Function]}
+  >
+    <div
+      className="innerScrollContainer scrollVertical"
+      style={
+        Object {
+          "height": 0,
+        }
+      }
+    >
+      <div
+        className="Burger"
+        style={
+          Object {
+            "height": 0,
+          }
+        }
+      />
+      <div>
+        <div
+          className="innerScrollList scrollVertical"
+        >
+          <strong>
+            test 0
+          </strong>
+          <strong>
+            test 1
+          </strong>
+          <strong>
+            test 2
+          </strong>
+          <strong>
+            test 3
+          </strong>
+          <strong>
+            test 4
+          </strong>
+          <strong>
+            test 5
+          </strong>
+          <strong>
+            test 6
+          </strong>
+          <strong>
+            test 7
+          </strong>
+          <strong>
+            test 8
+          </strong>
+          <strong>
+            test 9
+          </strong>
+          <strong>
+            test 10
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`horizontal chop list 1`] = `
+<div
+  style={
+    Object {
+      "height": 200,
+      "width": 600,
+    }
+  }
+>
+  <div
+    className="ChopList"
+    onScroll={[Function]}
+  >
+    <div
+      className="innerScrollContainer scrollHorizontal"
+      style={
+        Object {
+          "width": 0,
+        }
+      }
+    >
+      <div
+        className="Burger"
+        style={
+          Object {
+            "width": 0,
+          }
+        }
+      />
+      <div>
+        <div
+          className="innerScrollList scrollHorizontal"
+        >
+          <strong>
+            test 0
+          </strong>
+          <strong>
+            test 1
+          </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
