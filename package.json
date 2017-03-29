@@ -24,14 +24,17 @@
     "babel-preset-react": "^6.23.0",
     "jest": "^19.0.2",
     "nwb": "0.15.x",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
     "react-test-renderer": "^15.4.2",
     "regenerator-runtime": "^0.10.3"
   },
   "dependencies": {
     "jest-css-modules": "^1.1.0",
-    "lodash": "^4.17.4",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "lodash.debounce": "^4.0.8",
+    "lodash.flatten": "^4.4.0",
+    "lodash.property": "^4.4.2",
+    "lodash.throttle": "^4.1.1",
     "react-measure": "^1.4.6",
     "react-scripts": "0.6.1"
   },
