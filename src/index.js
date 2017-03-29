@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Measure from 'react-measure';
-import { property, debounce, throttle, flatten } from 'lodash';
+
+import property from 'lodash/property';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
+import flatten from 'lodash/flatten';
 
 import { propTypes, defaultProps, HORIZONTAL_DIRECTION } from './propTypes';
 import { getItemsRangeToRender, getNextScrollState, getFinalBufferingState, getNextBufferingState } from  './itemsChopper';

@@ -1,6 +1,6 @@
 {
   "name": "react-chop",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A react-virtualized alternative without measuring",
   "repository": "git@github.com:fcsonline/react-chop.git",
   "author": "Ferran Basora <fcsonline@gmail.com>",
@@ -10,7 +10,6 @@
     "react-component",
     "react-virtualized"
   ],
-
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -19,7 +18,6 @@
     "lib",
     "umd"
   ],
-
   "devDependencies": {
     "babel-jest": "^19.0.0",
     "babel-preset-es2015": "^6.24.0",
