@@ -38,7 +38,8 @@ export function getFinalBufferingState({ renderedItemsTotalSize, renderedItemsCo
 
 export function getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize, itemsCount, shrink, itemCount }) {
   const itemSize = renderedItemsTotalSize / renderedItemsCount;
-  const nextBump = shrink ? itemCount : Math.round(containerSize / itemSize);
+  const shouldShrink = shrink && (renderedItemsTotalSize < containerSize);
+  const nextBump = shouldShrink ? itemCount : Math.round(containerSize / itemSize);
 
   return (prevState) => ({
     isBuffering: true,
