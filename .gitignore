@@ -39,5 +39,5 @@ jspm_packages
 #nwb
 /demo/dist
 /es
-/lib
+#/lib
 /umd
