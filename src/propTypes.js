@@ -10,6 +10,7 @@ export const propTypes = {
   direction: PropTypes.oneOf([HORIZONTAL_DIRECTION, VERTICAL_DIRECTION]),
   scrollTo: PropTypes.number,
   scrollToItem: PropTypes.number,
+  shrink: PropTypes.bool,
 };
 
 export const defaultProps = {

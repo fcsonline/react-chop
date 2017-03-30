@@ -4,7 +4,7 @@ import {render} from 'react-dom'
 import './styles.css';
 import ChopList from '../../src'
 
-const SIZE = 1000;
+const SIZE = 50;
 
 class Demo extends Component {
 
@@ -155,14 +155,58 @@ class Demo extends Component {
         <button onClick={this.onScrollTo.bind(this)}>Scrolled to { scrollTo || '??' } px</button>
         <button onClick={this.onScrollToItem.bind(this)}>Scrolled to Item { scrollToItem || '??' }</button>
 
+        <h1>String theory</h1>
+
+        <div style={ {height: '600px', border: '1px solid green', display: 'flex', flexDirection: 'column', overflow: 'hidden'} }>
+          <div style={ {border: '1px solid red', flex: '1', display: 'flex', flexDirection: 'column'} }>
+            <ChopList
+              itemCount={list.length}
+              itemRenderer={this.itemRenderer.bind(this)}
+              scrollTo={scrollTo}
+              scrollToItem={scrollToItem}
+              shrink={true}
+            />
+            <button style={ {flexShrink: '1', minHeight: '30px'} }>+1</button>
+          </div>
+        </div>
+
+        <h1>String theory backup</h1>
+
+        <div style={ {height: '600px', border: '1px solid green', display: 'flex', flexDirection: 'column', overflow: 'hidden'} }>
+          <div style={ {border: '1px solid red', flex: '1', display: 'flex', flexDirection: 'column'} }>
+            <div style={ {overflowY: 'scroll', overflowX: 'hidden', flexGrow: '1'} }>
+              { list.map((i) => this.itemRenderer({key: `k${i}`, index: i})) }
+            </div>
+            <button style={ {flexShrink: '1', minHeight: '30px'} }>+1</button>
+          </div>
+        </div>
+
+
+
+        {
+        /*
         <h1>Same heights</h1>
-        <div style={ {height: '200px'} }>
-          <ChopList
-            itemCount={list.length}
-            itemRenderer={this.itemRenderer.bind(this)}
-            scrollTo={scrollTo}
-            scrollToItem={scrollToItem}
-          />
+        <div style={ {height: '600px', border: '1px solid green', display: 'flex', flexDirection: 'column', overflow: 'hidden'} }>
+          <div style={ {border: '1px solid red', flex: '1'} }>
+            <ChopList
+              itemCount={list.length}
+              itemRenderer={this.itemRenderer.bind(this)}
+              scrollTo={scrollTo}
+              scrollToItem={scrollToItem}
+              shrink={true}
+            />
+            <button>+1</button>
+          </div>
+        </div>
+        <h1>String theory backup</h1>
+
+        <div style={ {height: '600px', border: '1px solid green', display: 'flex', flexDirection: 'column', overflow: 'hidden'} }>
+          <div style={ {border: '1px solid red', flex: '1', display: 'flex', flexDirection: 'column'} }>
+            <div style={ {overflowY: 'scroll', overflowX: 'hidden', flexGrow: '1'} }>
+              { list.map((i) => this.itemRenderer({key: `k${i}`, index: i})) }
+            </div>
+            <button style={ {flexShrink: '1', minHeight: '30px'} }>+1</button>
+          </div>
         </div>
 
         <h1>Same widths</h1>
@@ -183,9 +227,6 @@ class Demo extends Component {
             direction='horizontal'
           />
         </div>
-
-        {
-        /*
 
         <h1>Empty list</h1>
         <div style={ {height: '200px'} }>

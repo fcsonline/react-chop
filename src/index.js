@@ -20,7 +20,7 @@ const HORIZONTAL_LENSES = {
   afterMargin: property('marginRight'),
   scrollClass: 'scrollHorizontal',
   makeStyles: (width) => ({width}),
-  log: () => {},
+  log: (msg) => { console.log(msg); },
 }
 
 const VERTICAL_LENSES = {
@@ -32,7 +32,7 @@ const VERTICAL_LENSES = {
   afterMargin: property('marginBottom'),
   scrollClass: 'scrollVertical',
   makeStyles: (height) => ({height}),
-  log: () => {},
+  log: (msg) => { console.log(msg); },
 }
 
 class ChopList extends Component {
@@ -101,15 +101,17 @@ class ChopList extends Component {
   }
 
   startBuffering() {
+    const { itemCount, shrink } = this.props;
+
     this.lenses.log('buffering...');
     const containerSize = this.getSize(this._list);
 
-    if (!containerSize) {
+    if (!containerSize && !this.props.shrink) {
       this.lenses.log('Chop container has no size!!');
       return;
     }
 
-    if (this.props.itemCount === 0) {
+    if (itemCount === 0) {
       return;
     }
 
@@ -119,13 +121,15 @@ class ChopList extends Component {
     const shouldRenderMoreItems = this.shouldRenderMoreItems(
       containerSize,
       renderedItemsTotalSize,
-      this.props.itemCount,
+      itemCount,
       renderedItemsCount
     );
 
+    const shrinkCalc = shrink && (renderedItemsTotalSize < containerSize);
+
     if (shouldRenderMoreItems) {
       this.lenses.log(`need more items: rendered ${renderedItemsCount} items`);
-      this.setState(getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize }));
+      this.setState(getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize, shrink: shrinkCalc, itemCount }));
       return;
     }
 
@@ -196,10 +200,17 @@ class ChopList extends Component {
     const containerSize = Math.round(itemCount * estimatedItemSize);
     const burgerSize = Math.round(burgerCount * estimatedItemSize);
 
-    const containerStyle = this.lenses.makeStyles(containerSize);
+    let chopStyle = {};
+    let containerStyle = this.lenses.makeStyles(containerSize);
     const burgerStyle = this.lenses.makeStyles(burgerSize);
 
+    if (this.props.shrink) {
+      chopStyle = {position: 'static', overflowY: 'scroll', overflowX: 'hidden', height: 'initial', margin: 'initial'};
+      containerStyle = {...containerStyle, position: 'static'};
+    }
+
     return {
+      chopStyle,
       containerStyle,
       burgerStyle,
     };
@@ -216,10 +227,10 @@ class ChopList extends Component {
 
   render() {
     const scrollClassName = this.lenses.scrollClass;
-    const { containerStyle, burgerStyle } = this.getStyles();
+    const { chopStyle, containerStyle, burgerStyle } = this.getStyles();
 
     return (
-      <div className='ChopList' ref={(c) => (this._list = c)} onScroll={this.onScroll}>
+      <div className='ChopList' ref={(c) => (this._list = c)} onScroll={this.onScroll} style={chopStyle}>
         <div className={`innerScrollContainer ${scrollClassName}`} style={containerStyle}>
           <div className='Burger' style={burgerStyle}/>
           <Measure onMeasure={this.onResize}>

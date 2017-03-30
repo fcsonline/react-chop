@@ -1,5 +1,3 @@
-// TODO: Simplify contract providing just offset and count. Normalize values
-// is not a responsibility of this function
 export function getItemsRangeToRender({ itemCount, windowCount, offset, overscan }) {
   console.assert(offset >= 0, 'Offset must be positive');
   console.assert(!offset || offset < itemCount, 'Offset must be less than itemCount');
@@ -38,9 +36,9 @@ export function getFinalBufferingState({ renderedItemsTotalSize, renderedItemsCo
   };
 }
 
-export function getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize }) {
+export function getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize, itemsCount, shrink, itemCount }) {
   const itemSize = renderedItemsTotalSize / renderedItemsCount;
-  const nextBump = Math.round(containerSize / itemSize);
+  const nextBump = shrink ? itemCount : Math.round(containerSize / itemSize);
 
   return (prevState) => ({
     isBuffering: true,
