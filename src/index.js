@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Measure from 'react-measure';
+//import Measure from 'react-measure';
 
 import property from 'lodash.property';
 import debounce from 'lodash.debounce';
@@ -231,11 +231,9 @@ class ChopList extends Component {
       <div className='ChopList' ref={(c) => (this._list = c)} onScroll={this.onScroll} style={chopStyle}>
         <div className={`innerScrollContainer ${scrollClassName}`} style={containerStyle}>
           <div className='Burger' style={burgerStyle}/>
-          <Measure onMeasure={this.onResize}>
-            <div className={`innerScrollList ${scrollClassName}`} ref={(c) => (this._innerScrollList = c)}>
-              {this.renderElements()}
-            </div>
-          </Measure>
+          <div className={`innerScrollList ${scrollClassName}`} ref={(c) => (this._innerScrollList = c)}>
+            {this.renderElements()}
+          </div>
         </div>
       </div>
     );
