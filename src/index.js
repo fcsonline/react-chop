@@ -125,11 +125,9 @@ class ChopList extends Component {
       renderedItemsCount
     );
 
-    const shrinkCalc = shrink && (renderedItemsTotalSize < containerSize);
-
     if (shouldRenderMoreItems) {
       this.lenses.log(`need more items: rendered ${renderedItemsCount} items`);
-      this.setState(getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize, shrink: shrinkCalc, itemCount }));
+      this.setState(getNextBufferingState({ renderedItemsTotalSize, renderedItemsCount, containerSize, shrink, itemCount }));
       return;
     }
 
